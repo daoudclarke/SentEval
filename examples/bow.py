@@ -7,6 +7,7 @@
 
 from __future__ import absolute_import, division, unicode_literals
 
+import json
 import sys
 import io
 import numpy as np
@@ -102,11 +103,16 @@ logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
 
 if __name__ == "__main__":
     se = senteval.engine.SE(params_senteval, batcher, prepare)
-    transfer_tasks = ['STS12', 'STS13', 'STS14', 'STS15', 'STS16',
-                      'MR', 'CR', 'MPQA', 'SUBJ', 'SST2', 'SST5', 'TREC', 'MRPC',
-                      'SICKEntailment', 'SICKRelatedness', 'STSBenchmark',
-                      'Length', 'WordContent', 'Depth', 'TopConstituents',
-                      'BigramShift', 'Tense', 'SubjNumber', 'ObjNumber',
-                      'OddManOut', 'CoordinationInversion']
-    results = se.eval(transfer_tasks)
+    # transfer_tasks = ['STS12', 'STS13', 'STS14', 'STS15', 'STS16',
+    #                   'MR', 'CR', 'MPQA', 'SUBJ', 'SST2', 'SST5', 'TREC', 'MRPC',
+    #                   'SICKEntailment', 'SICKRelatedness', 'STSBenchmark',
+    #                   'Length', 'WordContent', 'Depth', 'TopConstituents',
+    #                   'BigramShift', 'Tense', 'SubjNumber', 'ObjNumber',
+    #                   'OddManOut', 'CoordinationInversion']
+    # results = se.eval(transfer_tasks)
+    results = se.eval("SNLI")
+
+    with open("results.json", 'w') as output_file:
+        json.dump(results, output_file, indent=2)
+
     print(results)
