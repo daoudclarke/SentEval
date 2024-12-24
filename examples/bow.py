@@ -74,7 +74,7 @@ def prepare(params, samples):
     return
 
 def batcher(params, batch):
-    batch = [sent if sent != [] else ['.'] for sent in batch]
+    batch = [sent if len(sent) != 0 else ['.'] for sent in batch]
     embeddings = []
 
     for sent in batch:

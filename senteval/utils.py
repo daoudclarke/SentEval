@@ -59,7 +59,7 @@ def get_optimizer(s):
         for x in s[s.find(',') + 1:].split(','):
             split = x.split('=')
             assert len(split) == 2
-            assert re.match("^[+-]?(\d+(\.\d*)?|\.\d+)$", split[1]) is not None
+            assert re.match(r"^[+-]?(\d+(\.\d*)?|\.\d+)$", split[1]) is not None
             optim_params[split[0]] = float(split[1])
     else:
         method = s
@@ -86,7 +86,7 @@ def get_optimizer(s):
         raise Exception('Unknown optimization method: "%s"' % method)
 
     # check that we give good parameters to the optimizer
-    expected_args = inspect.getargspec(optim_fn.__init__)[0]
+    expected_args = list(inspect.signature(optim_fn.__init__).parameters.keys())
     assert expected_args[:2] == ['self', 'params']
     if not all(k in expected_args[2:] for k in optim_params.keys()):
         raise Exception('Unexpected parameters: expected "%s", got "%s"' % (
